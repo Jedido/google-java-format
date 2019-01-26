@@ -243,7 +243,7 @@
         <version>2.18</version>
         <configuration>
           <!-- set heap size to work around http://github.com/travis-ci/travis-ci/issues/3396 -->
-          <argLine>${argLine} -Xmx1024m</argLine>
+          <argLine>-Xmx1024m</argLine>
         </configuration>
       </plugin>
 
