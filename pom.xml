@@ -243,7 +243,10 @@
         <version>2.18</version>
         <configuration>
           <!-- set heap size to work around http://github.com/travis-ci/travis-ci/issues/3396 -->
-          <argLine>-Xmx1024m</argLine>
+	  <forkMode>once</forkMode>
+	  <forkCount>1</forkCount>
+          <argLine>@{jacoco.agent.argLine} -Xmx1024m</argLine>
+	  <reuseForks>false</reuseForks>
         </configuration>
       </plugin>
 
@@ -251,25 +254,19 @@
       <plugin>
 	<groupId>org.jacoco</groupId>
 	<artifactId>jacoco-maven-plugin</artifactId>
-	<version>0.7.5.201505241946</version>
+	<version>0.7.6.201602180812</version>
 	<executions>
           <!--
               Prepares the property pointing to the JaCoCo runtime agent which
               is passed as VM argument when Maven the Surefire plugin is executed.
           -->
           <execution>
-            <id>pre-unit-test</id>
+            <id>prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
 	    <configuration>
-              <!-- Sets the path to the file which contains the execution data. -->
-              <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-              <!--
-                  Sets the name of the property containing the settings
-                  for JaCoCo runtime agent.
-              -->
-              <propertyName>surefireArgLine</propertyName>
+              <propertyName>jacoco.agent.argLine</propertyName>
             </configuration>
           </execution>
           <!--
@@ -282,12 +279,6 @@
             <goals>
               <goal>report</goal>
             </goals>
-            <configuration>
-              <!-- Sets the path to the file which contains the execution data. -->
-              <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-              <!-- Sets the output directory for the code coverage report. -->
-              <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-            </configuration>
           </execution>
 	</executions>
       </plugin>
