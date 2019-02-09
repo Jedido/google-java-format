@@ -77,10 +77,19 @@ public class ModifierOrdererTest {
     String substring = "static public int a";
     int start = input.indexOf(substring);
     int end = start + substring.length();
+    JavaInput in = new JavaInput(input);
     String output =
         ModifierOrderer.reorderModifiers(
-                new JavaInput(input), Arrays.asList(Range.closedOpen(start, end)))
+                in, Arrays.asList(Range.closedOpen(start, end)))
             .getText();
+
+    // new code by Jed Chen
+    String out = in.toString();
+    for (String s : lines) {
+	assertThat(out).contains(s);
+    }
+    // end of new code
+
     assertThat(output).contains("public static int a;");
     assertThat(output).contains("static public int b;");
   }
